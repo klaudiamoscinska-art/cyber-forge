@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cyber Forge: Merge Tycoon</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <header id="statsBar">
+    <div class="stat">
+      <span class="stat-label">Złoto</span>
+      <span class="stat-value" id="statGold">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">DPS</span>
+      <span class="stat-value" id="statDps">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Poziom Rycerza</span>
+      <span class="stat-value" id="statLevel">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Fala</span>
+      <span class="stat-value" id="statWave">1</span>
+    </div>
+  </header>
+
+  <main id="gameContainer">
+
+    <section id="arena" aria-label="Arena walki">
+      <canvas id="rpgCanvas"></canvas>
+    </section>
+
+    <section id="forge" aria-label="Kuźnia Merge">
+      <div id="mergeGrid"></div>
+
+      <div id="controls">
+        <button id="btnForge" class="neon-btn btn-green" type="button">
+          <span class="btn-title">Wykuj Broń</span>
+          <span class="btn-cost" id="forgeCost">15 zł</span>
+        </button>
+
+        <button id="btnAutoMerge" class="neon-btn btn-cyan" type="button">
+          <span class="btn-title">Automatyczne Łączenie</span>
+          <span class="btn-cost" id="autoMergeStatus">30s (reklama)</span>
+        </button>
+
+        <button id="btnAtkSpeed" class="neon-btn btn-pink" type="button">
+          <span class="btn-title">Szybkość Ataku Rycerza</span>
+          <span class="btn-cost" id="atkSpeedCost">25 zł</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+/* ==========================================================================
+   Cyber Forge: Merge Tycoon — Cyberpunk / Neon stylesheet
+   ========================================================================== */
+
+:root {
+  --c-cyan: #00f3ff;
+  --c-pink: #ff007f;
+  --c-green: #39ff14;
+  --c-bg: #000000;
+  --c-panel: #050508;
+  --c-panel-border: #111318;
+  --font: 'Consolas', 'Courier New', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--c-bg);
+  color: var(--c-cyan);
+  font-family: var(--font);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Stats bar                                                               */
+/* ---------------------------------------------------------------------- */
+
+#statsBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 6px 4px;
+  background: var(--c-panel);
+  border-bottom: 1px solid var(--c-cyan);
+  box-shadow: 0 0 12px rgba(0, 243, 255, 0.6);
+  z-index: 2;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+
+.stat-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
+  color: #6fe8ff;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.stat-value {
+  font-size: clamp(0.85rem, 2.5vw, 1.2rem);
+  font-weight: bold;
+  color: var(--c-cyan);
+  text-shadow: 0 0 6px var(--c-cyan), 0 0 12px var(--c-cyan);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Main container — vertical split, 50 / 50                               */
+/* ---------------------------------------------------------------------- */
+
+#gameContainer {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+#arena {
+  flex: 1 1 50%;
+  min-height: 0;
+  position: relative;
+  background: radial-gradient(ellipse at center, #050510 0%, #000000 80%);
+  border-bottom: 2px solid var(--c-pink);
+  box-shadow: 0 0 16px rgba(255, 0, 127, 0.5);
+  overflow: hidden;
+}
+
+#rpgCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#forge {
+  flex: 1 1 50%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 8px;
+  overflow-y: auto;
+  background: var(--c-bg);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Merge grid                                                              */
+/* ---------------------------------------------------------------------- */
+
+#mergeGrid {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: clamp(4px, 1.5vw, 10px);
+  min-height: 0;
+  max-width: min(100%, 70vh);
+  width: 100%;
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+}
+
+.weapon-slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-panel);
+  border: 1px solid var(--c-panel-border);
+  border-radius: 8px;
+  cursor: default;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  min-width: 0;
+  min-height: 0;
+}
+
+.weapon-slot.empty {
+  border: 1px dashed #1c2530;
+}
+
+.weapon-slot.filled {
+  cursor: grab;
+  border-color: var(--slot-color, var(--c-green));
+  box-shadow: 0 0 10px var(--slot-glow, rgba(57, 255, 20, 0.5)) inset,
+              0 0 8px var(--slot-glow, rgba(57, 255, 20, 0.4));
+}
+
+.weapon-slot.filled:active {
+  cursor: grabbing;
+}
+
+.weapon-slot.selected {
+  transform: scale(1.08);
+  border-color: #ffffff;
+  box-shadow: 0 0 16px #ffffff, 0 0 10px var(--slot-glow, rgba(57, 255, 20, 0.6)) inset;
+  z-index: 1;
+}
+
+.weapon-slot.drag-over {
+  border-color: #ffffff;
+  transform: scale(1.05);
+}
+
+.weapon-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-weight: bold;
+  color: var(--slot-color, var(--c-green));
+  pointer-events: none;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.sword-icon {
+  width: clamp(20px, 7vw, 34px);
+  height: clamp(20px, 7vw, 34px);
+  filter: drop-shadow(0 0 4px var(--slot-glow, var(--c-green)))
+          drop-shadow(0 0 8px var(--slot-glow, var(--c-green)));
+}
+
+.weapon-icon .lvl {
+  display: block;
+  font-size: clamp(0.55rem, 2.4vw, 0.8rem);
+  opacity: 0.9;
+  text-shadow: 0 0 6px var(--slot-glow, var(--c-green));
+}
+
+.weapon-slot.merge-flash {
+  animation: mergeFlash 0.45s ease-out;
+}
+
+@keyframes mergeFlash {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 4px #fff, 0 0 4px #fff inset;
+  }
+  35% {
+    transform: scale(1.25);
+    box-shadow: 0 0 40px #ffffff, 0 0 60px var(--slot-glow, #fff), 0 0 30px #fff inset;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px var(--slot-glow, rgba(57, 255, 20, 0.5)) inset,
+                0 0 8px var(--slot-glow, rgba(57, 255, 20, 0.4));
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Controls                                                                */
+/* ---------------------------------------------------------------------- */
+
+#controls {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.neon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 4px;
+  background: #05050a;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.neon-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.neon-btn .btn-title {
+  font-size: clamp(0.55rem, 2.2vw, 0.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.neon-btn .btn-cost {
+  font-size: clamp(0.6rem, 2.4vw, 0.8rem);
+  font-weight: bold;
+}
+
+.btn-green {
+  color: var(--c-green);
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+}
+
+.btn-cyan {
+  color: var(--c-cyan);
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
+}
+
+.btn-pink {
+  color: var(--c-pink);
+  box-shadow: 0 0 10px rgba(255, 0, 127, 0.6);
+}
+
+.neon-btn:disabled {
+  color: #3a3f47;
+  border-color: #2a2e34;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.neon-btn.active-effect {
+  animation: pulseActive 0.8s ease-in-out infinite;
+}
+
+@keyframes pulseActive {
+  0%, 100% { box-shadow: 0 0 10px currentColor; }
+  50% { box-shadow: 0 0 24px currentColor, 0 0 36px currentColor; }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Responsive: wider screens get a bit more breathing room                */
+/* ---------------------------------------------------------------------- */
+
+@media (min-width: 700px) {
+  #forge {
+    padding: 16px 24px;
+  }
+
+  #controls {
+    grid-template-columns: repeat(3, minmax(0, 220px));
+    justify-content: center;
+  }
+
+  .neon-btn .btn-title {
+    font-size: 0.85rem;
+  }
+}
+
+@media (min-height: 900px) and (min-width: 700px) {
+  #mergeGrid {
+    max-width: 480px;
+  }
+}
